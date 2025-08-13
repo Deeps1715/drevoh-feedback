@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Customer Feedback | DREVOH - The Wood Studio</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet"/>
+
+    <style>
+        /************************************************************
+        * GLOBAL STYLES
+        *************************************************************/
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+    font-family: "Montserrat", Arial, sans-serif;
+    background:
+        /* Overlay gradient with lighter opacity */
+        linear-gradient(
+            135deg,
+            rgba(244, 226, 216, 0.65) 0%, /* reduced from 0.85 */
+            rgba(186, 144, 119, 0.65) 100% /* reduced from 0.85 */
+        ),
+        /* Wood texture background */
+        url('https://imgmedia.lbb.in/media/2020/06/5ed72bdafb08d71dda137159_1591159770008.jpg')
+        no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /************************************************************
+        * LOGO SECTION
+        *************************************************************/
+   .logo {
+    width: 80px; /* reduced size */
+    height: 80px;
+    margin-bottom: 15px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: transparent; /* ensure no CSS background */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 600px) {
+    .logo {
+        width: 60px; /* smaller on mobile */
+        height: 60px;
+    }
+}
+
+        /************************************************************
+        * TITLE TEXTS
+        *************************************************************/
+        .title-line-1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #3e2723;
+            margin-bottom: 6px;
+            text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .title-line-2 {
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: #5d4037;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        /************************************************************
+        * FORM CONTAINER
+        *************************************************************/
+        form {
+            max-width: 520px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 40px 35px 35px;
+            border-radius: 24px;
+
+            box-shadow:
+                0 15px 35px rgba(93, 64, 55, 0.15),
+                0 5px 15px rgba(0, 0, 0, 0.07);
+
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            position: relative;
+
+            backdrop-filter: blur(10px);
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        form:hover {
+            transform: translateY(-5px);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .form-subtext {
+            color: #795548;
+            font-size: 0.95rem;
+            margin-top: -10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /************************************************************
+        * INPUT FIELDS
+        *************************************************************/
+        .input-group {
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .error-message {
+            display: none;
+            color: #d32f2f;
+            font-size: 0.85em;
+            text-align: center;
+            margin-bottom: 8px;
+            background: rgba(211, 47, 47, 0.1);
+            padding: 5px 10px;
+            border-radius: 6px;
+            width: 100%;
+        }
+
+        input,
+        textarea {
+            font-family: inherit;
+            font-size: 1rem;
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            background: #fff;
+            transition: all 0.3s ease;
+            color: #3e2723;
+        }
+
+        textarea {
+            padding-right: 60px;
+            min-height: 120px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #8d6e63;
+            box-shadow: 0 0 0 4px rgba(141, 110, 99, 0.1);
+            outline: none;
+        }
+
+        .char-count {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            font-size: 0.8em;
+            color: #795548;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        ::placeholder {
+            color: #9e9e9e;
+            opacity: 1;
+        }
+
+        /************************************************************
+        * BUTTONS
+        *************************************************************/
+        button {
+            background: linear-gradient(135deg, #8d6e63 0%, #3e2723 100%);
+            color: #fff;
+            font-size: 1.15rem;
+            font-weight: 700;
+            padding: 16px 28px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(62, 39, 35, 0.2);
+        }
+
+        button:hover::before {
+            transform: translateX(100%);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /************************************************************
+        * SUBMIT STATUS
+        *************************************************************/
+        .submit-status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .submit-status.success {
+            opacity: 1;
+            background: rgba(76, 175, 80, 0.1);
+            color: #2e7d32;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .submit-status.error {
+            opacity: 1;
+            background: rgba(211, 47, 47, 0.1);
+            color: #d32f2f;
+            border: 1px solid rgba(211, 47, 47, 0.3);
+        }
+
+        .submit-status.loading {
+            opacity: 1;
+            background: rgba(33, 150, 243, 0.1);
+            color: #1976d2;
+            border: 1px solid rgba(33, 150, 243, 0.3);
+        }
+
+        /************************************************************
+        * RESPONSIVE STYLES
+        *************************************************************/
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            form {
+                padding: 25px 20px;
+                gap: 20px;
+            }
+
+            .title-line-1 {
+                font-size: 1.6rem;
+            }
+
+            .title-line-2 {
+                font-size: 1.2rem;
+            }
+
+            button {
+                padding: 14px 24px;
+            }
+
+            .logo {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Logo -->
+        <img src= "D:\USERDATA\Downloads\site\LOGO.jpg" alt="DREVOH Logo" class="logo"/>
+
+        <!-- Title -->
+        <div class="title-line-1">Welcome to DREVOH</div>
+        <div class="title-line-2">The Wood Studio</div>
+
+        <!-- Feedback Form -->
+        <form id="feedback-form">
+            <div class="form-header">
+                <p class="form-subtext">
+                    We value your feedback! Help us serve you better.
+                </p>
+            </div>
+
+            <div class="input-group">
+                <span id="name-error" class="error-message"></span>
+                <input type="text" name="name" id="name" placeholder="Your Name" required minlength="4"/>
+            </div>
+
+            <div class="input-group">
+                <span id="phone-error" class="error-message"></span>
+                <input type="tel" name="phone" id="phone" placeholder="Phone Number" required pattern="[0-9]{10}" maxlength="10"/>
+            </div>
+
+            <div class="input-group">
+                <span id="email-error" class="error-message"></span>
+                <input type="email" name="email" id="email" placeholder="Email Address" required/>
+            </div>
+
+            <div class="input-group">
+                <span id="review-error" class="error-message"></span>
+                <textarea name="review" id="review" placeholder="Product Review" required minlength="10" maxlength="500"></textarea>
+            </div>
+
+            <button type="submit">Submit Feedback</button>
+        </form>
+    </div>
+
+    <script>
+        const scriptURL = "https://script.google.com/macros/s/AKfycbz0EdrlpZbamoyX3eXYH98XT2JFIb39c--1PvpoD0wdI-P7UuJGAoi9Dos5Je_02TYM/exec";
+
+        const form = document.getElementById("feedback-form");
+        const nameInput = document.getElementById("name");
+        const phoneInput = document.getElementById("phone");
+        const emailInput = document.getElementById("email");
+        const reviewInput = document.getElementById("review");
+
+        const nameError = document.getElementById("name-error");
+        const phoneError = document.getElementById("phone-error");
+        const emailError = document.getElementById("email-error");
+        const reviewError = document.getElementById("review-error");
+
+        const submitStatus = document.createElement("div");
+        submitStatus.className = "submit-status";
+        form.appendChild(submitStatus);
+
+        const charCount = document.createElement("span");
+        charCount.className = "char-count";
+        reviewInput.parentElement.appendChild(charCount);
+
+        function showError(element, message) {
+            element.textContent = message;
+            element.style.display = "block";
+        }
+
+        function hideError(element) {
+            element.style.display = "none";
+        }
+
+        function validateName() {
+            const name = nameInput.value.trim();
+            if (name.length <= 3) {
+                showError(nameError, "⚠️ Name must be at least 4 characters long");
+                return false;
+            }
+            hideError(nameError);
+            return true;
+        }
+
+        function validatePhone() {
+            const val = phoneInput.value.trim();
+            if (!/^\d{10}$/.test(val)) {
+                showError(phoneError, "⚠️ Phone number must be exactly 10 digits");
+                return false;
+            }
+            hideError(phoneError);
+            return true;
+        }
+
+        function validateEmail() {
+            if (!emailInput.checkValidity()) {
+                showError(emailError, "⚠️ Please enter a valid email address");
+                return false;
+            }
+            hideError(emailError);
+            return true;
+        }
+
+        function validateReview() {
+            const length = reviewInput.value.trim().length;
+            if (length < 10) {
+                showError(reviewError, "⚠️ Review must be at least 10 characters long");
+                return false;
+            }
+            if (length > 500) {
+                showError(reviewError, "⚠️ Review cannot exceed 500 characters");
+                return false;
+            }
+            hideError(reviewError);
+            return true;
+        }
+
+        function updateCharCount() {
+            const length = reviewInput.value.trim().length;
+            charCount.textContent = `${length}/500`;
+            charCount.style.color = length > 500 ? "#d32f2f" : "#795548";
+        }
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const isNameValid = validateName();
+            const isPhoneValid = validatePhone();
+            const isEmailValid = validateEmail();
+            const isReviewValid = validateReview();
+
+            if (!isNameValid || !isPhoneValid || !isEmailValid || !isReviewValid) {
+                submitStatus.textContent = "Please fix the errors before submitting.";
+                submitStatus.className = "submit-status error";
+                return;
+            }
+
+            const data = {
+                name: nameInput.value.trim(),
+                phoneNumber: phoneInput.value.trim(),
+                email: emailInput.value.trim(),
+                feedback: reviewInput.value.trim()
+            };
+
+            const submitButton = form.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitStatus.textContent = "Submitting your feedback...";
+            submitStatus.className = "submit-status loading";
+
+            try {
+                const response = await fetch(scriptURL, {
+                    method: "POST",
+                    body: JSON.stringify(data)
+                });
+                await response.json();
+                submitStatus.textContent = "Thank you! Your feedback has been submitted successfully.";
+                submitStatus.className = "submit-status success";
+                form.reset();
+                setTimeout(() => {
+                    window.location.href = "thankyoucard.html";
+                }, 1500);
+            } catch (error) {
+                submitStatus.textContent = "Sorry, there was an error submitting your feedback. Please try again.";
+                submitStatus.className = "submit-status error";
+            } finally {
+                submitButton.disabled = false;
+            }
+        });
+
+        phoneInput.addEventListener("keypress", (event) => {
+            if (!/[0-9]/.test(event.key) || phoneInput.value.length >= 10) {
+                event.preventDefault();
+            }
+        });
+
+        phoneInput.addEventListener("paste", (event) => {
+            const pastedText = (event.clipboardData || window.clipboardData).getData("text");
+            if (!/^\d*$/.test(pastedText)) {
+                event.preventDefault();
+            }
+        });
+
+        phoneInput.addEventListener("input", (event) => {
+            event.target.value = event.target.value.replace(/[^\d]/g, "").slice(0, 10);
+            validatePhone();
+        });
+
+        nameInput.addEventListener("input", validateName);
+        emailInput.addEventListener("input", validateEmail);
+        reviewInput.addEventListener("input", () => {
+            validateReview();
+            updateCharCount();
+        });
+    </script>
+</body>
+</html>
